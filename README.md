@@ -6,7 +6,7 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-Run port-forward for getting to the dashboard:
+Run port-forward for getting to the dashboard https://127.0.0.1:8080:
 ```bash
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
