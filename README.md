@@ -29,10 +29,10 @@ flowchart TD
    GitHubRepo --> GitHubRepoCI
    subgraph Github Actions
    subgraph GitHubRepoCI[GitHub Repo CI]
-   C(docker build) --> D(docker push)
+   GitHubRepoCIA(docker build) --> GitHubRepoCIB(docker push)
    end
    subgraph ArgoCD[Argo Apps Repo CI]
-   E(git commit) -- Update Kubernetes Manifest --> F(git push)
+   ArgoCDA(git commit) -- Update Kubernetes Manifest --> ArgoCDB(git push)
    end
    GitHubRepoCI -- Successful Build --> ArgoCD
    end
@@ -44,7 +44,7 @@ flowchart TD
    Volumes[(Database Volumes)] <== Read and Write ==> Deployment
    Deployment --> Caddy
    end
-   D --> DockerHub{{DockerHub}}
+   GitHubRepoCIB --> DockerHub{{DockerHub}}
    ArgoAppsRepo --> ArgoWorkflow
    DockerHub -- Docker Images --> Deployment
    Caddy -- TLS Encryption --> Internet((Internet / Public URL))
