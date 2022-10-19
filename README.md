@@ -15,3 +15,37 @@ ID: `admin` Pass:
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
+
+---
+
+### CI/CD Workflow:
+```mermaid
+flowchart TD
+   subgraph localhost
+   LocalA(git commit) --> LocalB(git push)
+   end
+   subgraph Github
+   LocalB --> GitHubRepo[GitHub Repo]
+   GitHubRepo --> GitHubRepoCI
+   subgraph Github Actions
+   subgraph GitHubRepoCI[GitHub Repo CI]
+   C(docker build) --> D(docker push)
+   end
+   subgraph ArgoCD[Argo Apps Repo CI]
+   E(git commit) -- Update Kubernetes Manifest --> F(git push)
+   end
+   GitHubRepoCI -- Successful Build --> ArgoCD
+   end
+   ArgoCD --> ArgoAppsRepo[Argo Apps Repo]
+   end
+   subgraph Kubernetes[Kubernetes Cluster]
+   ArgoWorkflow[Argo Workflow] -- Kubernetes Manifest --> Deployment{App Deployment}
+   Vault[HashiCorp Vault] -- Secrets --> Deployment
+   Volumes[(Database Volumes)] <== Read and Write ==> Deployment
+   Deployment --> Caddy
+   end
+   D --> DockerHub{{DockerHub}}
+   ArgoAppsRepo --> ArgoWorkflow
+   DockerHub -- Docker Images --> Deployment
+   Caddy -- TLS Encryption --> Internet((Internet / Public URL))
+```
