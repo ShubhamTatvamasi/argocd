@@ -1,0 +1,25 @@
+name: ArgoCD
+
+on: workflow_dispatch
+
+jobs:
+  argo-update:
+    runs-on: ubuntu-latest
+    steps:
+
+    - uses: actions/checkout@v3
+      with:
+        repository: ShubhamTatvamasi/argocd-app
+        token: ${{ secrets.GH_PAT }}
+
+    - name: Update docker image
+      run: |
+        export DOCKER_IMAGE="nginx:1.18"
+        yq e '.spec.template.spec.containers[0].image = env(DOCKER_IMAGE)' -i dev/deployment.yaml
+
+    - name: Push latest code
+      run: |
+        git config --global user.name 'Shubham Tatvamasi'
+        git config --global user.email 'shubhamtatvamasi@gmail.com'
+        git commit -am "Updated docker image"
+        git push origin master --force
