@@ -39,7 +39,7 @@ flowchart TD
    ArgoCD --> ArgoAppsRepo[Argo Apps Repo]
    end
    subgraph Kubernetes[Kubernetes Cluster]
-   ArgoWorkflow[Argo Workflow] -- Kubernetes Manifest --> Deployment{App Deployment}
+   ArgoWorkflow[ArgoCD] -- Kubernetes Manifest --> Deployment{App Deployment}
    Vault[HashiCorp Vault] -- Secrets --> Deployment
    Volumes[(Database Volumes)] <== Read and Write ==> Deployment
    Deployment --> Caddy
