@@ -4,6 +4,8 @@ Deploy Argo CD:
 ```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.6.7/manifests/install.yaml
 ```
 
 Run port-forward for getting to the dashboard https://127.0.0.1:8080:
